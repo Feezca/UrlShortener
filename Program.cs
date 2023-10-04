@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using UrlShortener.Proyecto.Data;
+
 namespace UrlShortener
 {
     public class Program

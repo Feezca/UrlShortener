@@ -1,6 +1,6 @@
 ﻿namespace UrlShortener.Proyecto.Controllers
 {
-    public class XYZControllers
+    public class UrlControllers
     {
     }
 }

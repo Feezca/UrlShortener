@@ -1,82 +1,47 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Reflection.Emit;
+using UrlShortener.Proyecto.Entities;
 
 namespace UrlShortener.Proyecto.Data
 {
     public class UrlShortenerContext :DbContext
-    {
+        {
    
 
-    public DbSet<Urls> Users { get; set; }
+        public DbSet<Url> Urls { get; set; }
 
-    public Context(DbContextOptions<UrlShortenerContext> options) : base(options) //Acá estamos llamando al constructor de DbContext que es el que acepta las opciones
-    {
-    }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        User karen = new User()
+        public UrlShortenerContext(DbContextOptions<UrlShortenerContext> options) : base(options) //Acá estamos llamando al constructor
+                                                                                      //de DbContext que es el que
+                                                                                      //acepta las opciones
         {
-            Id = 1,
-            Name = "Karen",
-            LastName = "Lasot",
-            Password = "Pa$$w0rd",
-            Email = "karenbailapiola@gmail.com",
-            UserName = "karenpiola"
-        };
-        User luis = new User()
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            Id = 2,
-            Name = "Luis Gonzalez",
-            LastName = "Gonzales",
-            Password = "lamismadesiempre",
-            Email = "elluismidetotoras@gmail.com",
-            UserName = "luismitoto"
-        };
+                Url first = new Url()
+                {
+                    Id = 1,
+                    NormalUrl = "mercadolibre.com",
+                    ShortUrl = "..."
+                };
+                Url second = new Url()
+                {
+                    Id = 2,
+                    NormalUrl = "locoarts.com",
+                    ShortUrl = "..."
+                };
+                Url third = new Url()
+                {
+                    Id = 3,
+                    NormalUrl = "netmentor.com",
+                    ShortUrl = "..."
+                };
 
-        Contact jaimitoC = new Contact()
-        {
-            Id = 1,
-            Name = "Jaimito",
-            CelularNumber = 341457896,
-            Description = "Plomero",
-            TelephoneNumber = null,
-            UserId = karen.Id,
-        };
+                modelBuilder.Entity<Url>().HasData(
+                first, second, third);
 
-        Contact pepeC = new Contact()
-        {
-            Id = 2,
-            Name = "Pepe",
-            CelularNumber = 34156978,
-            Description = "Papa",
-            TelephoneNumber = 422568,
-            UserId = luis.Id,
-        };
-
-        Contact mariaC = new Contact()
-        {
-            Id = 3,
-            Name = "Maria",
-            CelularNumber = 011425789,
-            Description = "Jefa",
-            TelephoneNumber = null,
-            UserId = karen.Id,
-        };
-
-        modelBuilder.Entity<User>().HasData(
-            karen, luis);
-
-        modelBuilder.Entity<Contact>().HasData(
-             jaimitoC, pepeC, mariaC
-             );
-
-        modelBuilder.Entity<User>()
-          .HasMany<Contact>(u => u.Contacts)
-          .WithOne(c => c.User);
-
-        base.OnModelCreating(modelBuilder);
-    }
-}
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
