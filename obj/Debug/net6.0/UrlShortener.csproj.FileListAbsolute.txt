@@ -1,6 +1,5 @@
 C:\Users\carri\OneDrive\Escritorio\Backend\UrlShortener\bin\Debug\net6.0\appsettings.Development.json
 C:\Users\carri\OneDrive\Escritorio\Backend\UrlShortener\bin\Debug\net6.0\appsettings.json
-C:\Users\carri\OneDrive\Escritorio\Backend\UrlShortener\bin\Debug\net6.0\Proyecto\Properties\launchSettings.json
 C:\Users\carri\OneDrive\Escritorio\Backend\UrlShortener\bin\Debug\net6.0\UrlShortener.exe
 C:\Users\carri\OneDrive\Escritorio\Backend\UrlShortener\bin\Debug\net6.0\UrlShortener.deps.json
 C:\Users\carri\OneDrive\Escritorio\Backend\UrlShortener\bin\Debug\net6.0\UrlShortener.runtimeconfig.json

@@ -5,6 +5,10 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Properties\launchSettings.json" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.9" />
@@ -15,9 +19,11 @@
 	  </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Proyecto\Data\Implementations\" />
-    <Folder Include="Proyecto\Data\Interfaces\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="Controllers\" />
+		<Folder Include="Proyecto\Data\Implementations\" />
+		<Folder Include="Proyecto\Data\Interfaces\" />
+		<Folder Include="Proyecto\Properties\" />
+	</ItemGroup>
 
 </Project>

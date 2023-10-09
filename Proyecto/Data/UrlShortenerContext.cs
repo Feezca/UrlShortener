@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Reflection.Emit;
 using UrlShortener.Proyecto.Entities;
 
 namespace UrlShortener.Proyecto.Data
@@ -11,9 +9,8 @@ namespace UrlShortener.Proyecto.Data
 
         public DbSet<Url> Urls { get; set; }
 
-        public UrlShortenerContext(DbContextOptions<UrlShortenerContext> options) : base(options) //Acá estamos llamando al constructor
-                                                                                      //de DbContext que es el que
-                                                                                      //acepta las opciones
+        public UrlShortenerContext(DbContextOptions<UrlShortenerContext> options) : base(options) 
+            //Acá estamos llamando al constructor de DbContext que es el que acepta las opciones
         {
         }
 

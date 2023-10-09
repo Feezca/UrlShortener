@@ -3,7 +3,7 @@
 namespace UrlShortener.Proyecto.Models
 {
     public class UrlForCreationDto
-    {
+    { 
         [Required]
         public int Id { get; set; }
         [Required]
