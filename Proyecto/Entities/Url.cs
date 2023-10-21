@@ -10,5 +10,6 @@ namespace UrlShortener.Proyecto.Entities
         public int Id { get; set; }
         public string NormalUrl { get; set; }
         public string ShortUrl { get; set; }
+        public int Click_Counter { get; set; } = 0;
     }
 }

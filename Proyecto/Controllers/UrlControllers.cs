@@ -25,13 +25,26 @@ namespace UrlShortener.Proyecto.Controllers
             return Ok(listUrl);        
         }
 
+        [HttpGet("{shortUrl}")]
+        public RedirectResult GetLongUrl(string shortUrl)
+        {
+            Url urlDest= _UrlShortenerService.UrlRedirector(shortUrl);
+            return Redirect(urlDest.NormalUrl);
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteUrl(int id)
+        {
+            return Ok(_UrlShortenerService.DeleteUrl(id));
+        }
+
         [HttpPost]
         public async Task<ActionResult<List<Url>>> AddUrl(Url NewUrl, [FromQuery] string url)
         {
             if (NewUrl != null) 
             {
                 NewUrl.NormalUrl = url;
-                NewUrl.ShortUrl = _UrlShortenerService.UrlShortener(8);
+                NewUrl.ShortUrl = _UrlShortenerService.UrlShortener(6);
                 _UrlShortenerContext.Urls.Add(NewUrl);
                 await _UrlShortenerContext.SaveChangesAsync();
                 var urls= await _UrlShortenerContext.Urls.ToListAsync();
