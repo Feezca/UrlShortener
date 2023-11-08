@@ -4,23 +4,26 @@
 
 namespace UrlShortener.Migrations
 {
-    public partial class actualizaciondb : Migration
+    /// <inheritdoc />
+    public partial class RedefinicionDeTablas : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "Contador",
-                table: "Urls",
-                type: "INTEGER",
+            migrationBuilder.AddColumn<string>(
+                name: "Email",
+                table: "Users",
+                type: "TEXT",
                 nullable: false,
-                defaultValue: 0);
+                defaultValue: "");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Contador",
-                table: "Urls");
+                name: "Email",
+                table: "Users");
         }
     }
 }

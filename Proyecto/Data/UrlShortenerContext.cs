@@ -5,38 +5,43 @@ namespace UrlShortener.Proyecto.Data
 {
     public class UrlShortenerContext :DbContext
         {
-   
-
         public DbSet<Url> Urls { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         public UrlShortenerContext(DbContextOptions<UrlShortenerContext> options) : base(options) 
-            //Acá estamos llamando al constructor de DbContext que es el que acepta las opciones
         {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-                Url first = new Url()
-                {
-                    Id = 1,
-                    NormalUrl = "mercadolibre.com",
-                    ShortUrl = "..."
-                };
-                Url second = new Url()
-                {
-                    Id = 2,
-                    NormalUrl = "locoarts.com",
-                    ShortUrl = "..."
-                };
-                Url third = new Url()
-                {
-                    Id = 3,
-                    NormalUrl = "netmentor.com",
-                    ShortUrl = "..."
-                };
+            User Admin = new User()
+            {
+                Id = 1,
+                Username = "Admin",
+                Password = "12345",
+                Email = "admin1234@gmail.com",
+            };
+            User luis = new User()
+            {
+                Id = 2,
+                Username = "Luis Gonzalez",
+                Password = "65432",
+                Email = "elluismidetotoras@gmail.com",
+            };
+            modelBuilder.Entity<User>().HasData(
+                Admin, luis);
 
-                modelBuilder.Entity<Url>().HasData(
-                first, second, third);
+            modelBuilder.Entity<Url>()
+            .HasOne(url => url.User)
+            .WithMany()
+            .HasForeignKey(url => url.UserId);
+            
+            modelBuilder.Entity<Url>()
+            .HasOne(u => u.Category)
+            .WithMany()
+            .HasForeignKey(u => u.CategoryId);
+
 
             base.OnModelCreating(modelBuilder);
         }

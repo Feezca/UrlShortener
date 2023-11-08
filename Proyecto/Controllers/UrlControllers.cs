@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UrlShortener.Proyecto.Data;
 using UrlShortener.Proyecto.Entities;
+using UrlShortener.Proyecto.Models;
 using UrlShortener.Proyecto.Services;
 
 namespace UrlShortener.Proyecto.Controllers
@@ -21,7 +23,14 @@ namespace UrlShortener.Proyecto.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var listUrl = _UrlShortenerContext.Urls.ToListAsync(); 
+
+            //otra manera puede ser :  
+            // var urls = _UrlShortenerContext.Urls
+            //     .Include(u=>u.Categories)
+            //     .Include(u => u.User).toList();
+
+
+            var listUrl = _UrlShortenerContext.Urls.ToList(); 
             return Ok(listUrl);        
         }
 
@@ -33,24 +42,34 @@ namespace UrlShortener.Proyecto.Controllers
         }
 
         [HttpDelete]
+        [Authorize]
         public IActionResult DeleteUrl(int id)
         {
             return Ok(_UrlShortenerService.DeleteUrl(id));
         }
-
-        [HttpPost]
-        public async Task<ActionResult<List<Url>>> AddUrl(Url NewUrl, [FromQuery] string url)
+        [HttpPut]
+        [Route("{Id}")]
+        public IActionResult UpdateUrl(CreateAndUpdateUrlDto dto, int urlId)
         {
-            if (NewUrl != null) 
-            {
-                NewUrl.NormalUrl = url;
-                NewUrl.ShortUrl = _UrlShortenerService.UrlShortener(6);
-                _UrlShortenerContext.Urls.Add(NewUrl);
-                await _UrlShortenerContext.SaveChangesAsync();
-                var urls= await _UrlShortenerContext.Urls.ToListAsync();
-                return Ok(urls);
-            }
-            return BadRequest();
+            _UrlShortenerService.Update(dto, urlId);
+            return NoContent();
         }
-     }
+        [HttpPost]
+        [Authorize]
+        public IActionResult CreateUrl(CreateAndUpdateUrlDto dto)
+        {
+            int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier"))!.Value);
+            
+            try
+            {
+                _UrlShortenerService.Create(dto, userId );
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            return Created("Created", dto);
+        }
+        
+    }
 }

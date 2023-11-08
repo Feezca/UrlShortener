@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Text;
 using System.Xml;
 using UrlShortener.Proyecto.Data;
 using UrlShortener.Proyecto.Entities;
@@ -16,7 +18,6 @@ namespace UrlShortener.Proyecto.Services
             _context = context;
         }
 
-
         private const string AllowedCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         private static readonly Random random = new Random();
         public string UrlShortener(int length)
@@ -30,7 +31,26 @@ namespace UrlShortener.Proyecto.Services
             }
             return generator.ToString();
         }
-
+        public void Create(CreateAndUpdateUrlDto dto,int userId)
+        {
+            Url newUrl= new Url();
+            {
+                newUrl.NormalUrl= dto.Url;
+                newUrl.ShortUrl = UrlShortener(6);
+                newUrl.CategoryId = dto.CategoryId;
+                newUrl.UserId = userId;
+            }
+            _context.Urls.Add(newUrl);
+            _context.SaveChanges();
+        }
+        public void Update(CreateAndUpdateUrlDto dto, int urlId)
+        {
+            Url urlToUpdate = _context.Urls.First(u => u.Id == urlId);
+            urlToUpdate.NormalUrl = dto.Url;
+            urlToUpdate.ShortUrl = UrlShortener(6);
+            urlToUpdate.CategoryId = dto.CategoryId;
+            _context.SaveChanges();
+        }
         public Url? UrlRedirector(string url)
         {
             Url searchedUrl = _context.Urls.SingleOrDefault(u => u.ShortUrl == url);

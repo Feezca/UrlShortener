@@ -14,12 +14,30 @@ namespace UrlShortener.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.9");
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.13");
+
+            modelBuilder.Entity("UrlShortener.Proyecto.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
 
             modelBuilder.Entity("UrlShortener.Proyecto.Entities.Url", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CategoryId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Click_Counter")
@@ -33,32 +51,74 @@ namespace UrlShortener.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("Urls");
+                });
+
+            modelBuilder.Entity("UrlShortener.Proyecto.Entities.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            Click_Counter = 0,
-                            NormalUrl = "mercadolibre.com",
-                            ShortUrl = "..."
+                            Email = "admin1234@gmail.com",
+                            Password = "12345",
+                            Username = "Admin"
                         },
                         new
                         {
                             Id = 2,
-                            Click_Counter = 0,
-                            NormalUrl = "locoarts.com",
-                            ShortUrl = "..."
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Click_Counter = 0,
-                            NormalUrl = "netmentor.com",
-                            ShortUrl = "..."
+                            Email = "elluismidetotoras@gmail.com",
+                            Password = "65432",
+                            Username = "Luis Gonzalez"
                         });
+                });
+
+            modelBuilder.Entity("UrlShortener.Proyecto.Entities.Url", b =>
+                {
+                    b.HasOne("UrlShortener.Proyecto.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UrlShortener.Proyecto.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }
