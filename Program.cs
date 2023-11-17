@@ -13,18 +13,17 @@ namespace UrlShortener
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(setupAction =>
             {
-                setupAction.AddSecurityDefinition("AgendaApiBearerAuth", new OpenApiSecurityScheme() //Esto va a permitir usar swagger con el token.
+                setupAction.AddSecurityDefinition("UrlShortenerBearerAuth", new OpenApiSecurityScheme()
+                //Esto va a permitir usar swagger con el token.
                 {
                     Type = SecuritySchemeType.Http,
                     Scheme = "Bearer",
-                    Description = "Acá pegar el token generado al loguearse."
+                    Description = "Paste Token here."
                 });
 
                 setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -35,7 +34,7 @@ namespace UrlShortener
                 Reference = new OpenApiReference
                 {
                     Type = ReferenceType.SecurityScheme,
-                    Id = "AgendaApiBearerAuth" } //Tiene que coincidir con el id seteado arriba en la definición
+                    Id = "UrlShortenerBearerAuth" } //Tiene que coincidir con el id seteado arriba en la definición
                 }, new List<string>() }
     });
             });

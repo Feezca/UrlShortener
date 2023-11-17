@@ -9,8 +9,7 @@ namespace UrlShortener.Proyecto.Models
         public string Url { get; set; }
         [Required]
         public int CategoryId { get; set; }
-        public User? User { get; set; }
-        public Category? Category { get; set; }
+        public User? User { get; set; } 
 
     }
 }

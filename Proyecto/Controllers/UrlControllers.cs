@@ -10,6 +10,7 @@ namespace UrlShortener.Proyecto.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UrlControllers : ControllerBase
     {
         private readonly UrlShortenerService _UrlShortenerService;
@@ -23,16 +24,11 @@ namespace UrlShortener.Proyecto.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
+            int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier"))!.Value);
 
-            //otra manera puede ser :  
-            // var urls = _UrlShortenerContext.Urls
-            //     .Include(u=>u.Categories)
-            //     .Include(u => u.User).toList();
-
-
-            var listUrl = _UrlShortenerContext.Urls.ToList(); 
-            return Ok(listUrl);        
+            return Ok(_UrlShortenerService.GetAllByUser(userId));        
         }
+
 
         [HttpGet("{shortUrl}")]
         public RedirectResult GetLongUrl(string shortUrl)
@@ -42,7 +38,7 @@ namespace UrlShortener.Proyecto.Controllers
         }
 
         [HttpDelete]
-        [Authorize]
+            
         public IActionResult DeleteUrl(int id)
         {
             return Ok(_UrlShortenerService.DeleteUrl(id));
@@ -55,19 +51,10 @@ namespace UrlShortener.Proyecto.Controllers
             return NoContent();
         }
         [HttpPost]
-        [Authorize]
         public IActionResult CreateUrl(CreateAndUpdateUrlDto dto)
         {
             int userId = Int32.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier"))!.Value);
-            
-            try
-            {
-                _UrlShortenerService.Create(dto, userId );
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            _UrlShortenerService.Create(dto, userId );
             return Created("Created", dto);
         }
         

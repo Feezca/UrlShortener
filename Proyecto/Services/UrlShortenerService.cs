@@ -62,6 +62,11 @@ namespace UrlShortener.Proyecto.Services
         {
             return _context.Urls.SingleOrDefault(u => u.Id == id);
         }
+        public List<Url> GetAllByUser(int id)
+        {
+
+            return _context.Urls.Include(c => c.User).Where(c => c.User.Id == id).ToList();
+        }
         public bool DeleteUrl(int id)
         {
             Url? UrlToDelete = GetUrl(id);

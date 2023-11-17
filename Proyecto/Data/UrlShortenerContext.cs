@@ -29,8 +29,25 @@ namespace UrlShortener.Proyecto.Data
                 Password = "65432",
                 Email = "elluismidetotoras@gmail.com",
             };
+            Category social = new Category()
+            {
+                Id = 1,
+                CategoryName = "Sociales"
+            };
+            Category deportes = new Category()
+            {
+                Id = 2,
+                CategoryName = "Deportivas"
+            };
+            Category multimedia = new Category()
+            {
+                Id = 3,
+                CategoryName = "Multimedia"
+            };
             modelBuilder.Entity<User>().HasData(
                 Admin, luis);
+            modelBuilder.Entity<Category>().HasData(
+                social, deportes, multimedia);
 
             modelBuilder.Entity<Url>()
             .HasOne(url => url.User)
